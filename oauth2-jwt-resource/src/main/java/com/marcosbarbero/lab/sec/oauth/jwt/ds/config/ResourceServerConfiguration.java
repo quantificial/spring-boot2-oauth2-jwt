@@ -41,6 +41,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+    	
+    	/**
+    	 * ensure the client with authorized scope to access the api
+    	 */
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, ROOT_PATTERN).access("#oauth2.hasScope('read')")
                 .antMatchers(HttpMethod.POST, ROOT_PATTERN).access("#oauth2.hasScope('write')")
@@ -51,14 +55,20 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Bean
     public DefaultTokenServices tokenServices(final TokenStore tokenStore) {
+    	
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setTokenStore(tokenStore);
+        
         return tokenServices;
     }
 
+    /**
+     * create the JWT tokenstore
+     * @return
+     */
     @Bean
-    public TokenStore tokenStore() {
-        if (tokenStore == null) {
+    public TokenStore tokenStore() {        
+    	if (tokenStore == null) {
             tokenStore = new JwtTokenStore(jwtAccessTokenConverter());
         }
         return tokenStore;
