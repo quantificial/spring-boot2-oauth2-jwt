@@ -23,5 +23,11 @@ public class UserController {
     public ResponseEntity<Principal> get(final Principal principal) {
         return ResponseEntity.ok(principal);
     }
+    
+    @PreAuthorize("#oauth2.hasScope('read')")
+    @RequestMapping("/test")
+    public ResponseEntity<String> test() {
+    	return ResponseEntity.ok("this is testing");
+    }
 
 }

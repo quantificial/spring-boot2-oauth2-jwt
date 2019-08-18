@@ -1,3 +1,5 @@
+
+
 server:
   port: 9100
 
@@ -6,6 +8,15 @@ security:
     public-key: classpath:public.txt
 
 spring:
+  application:
+    name: oauth2-jwt-resource
   jackson:
     serialization:
       INDENT_OUTPUT: true
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        register: false
+        enabled: false

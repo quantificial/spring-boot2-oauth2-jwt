@@ -42,6 +42,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
     	
+    	//http.requestMatchers().antMatchers("/actuator");
+    	//http.requestMatchers().antMatchers("/actuator/**");
+    	http.authorizeRequests().antMatchers("/actuator").permitAll();
+    	http.authorizeRequests().antMatchers("/actuator/**").permitAll();
+    	
     	/**
     	 * ensure the client with authorized scope to access the api
     	 */
@@ -51,6 +56,12 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .antMatchers(HttpMethod.PATCH, ROOT_PATTERN).access("#oauth2.hasScope('write')")
                 .antMatchers(HttpMethod.PUT, ROOT_PATTERN).access("#oauth2.hasScope('write')")
                 .antMatchers(HttpMethod.DELETE, ROOT_PATTERN).access("#oauth2.hasScope('write')");
+        
+        http
+        .authorizeRequests()            
+        	.anyRequest()
+        	.authenticated();
+        
     }
 
     @Bean
